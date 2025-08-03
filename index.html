@@ -2,12 +2,53 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>내 서재 - 도서 검색</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>내 서재 검색</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      padding: 40px;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      display: block;
+      margin: 0 auto 20px auto;
+      padding: 10px;
+      width: 300px;
+      font-size: 16px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #eee;
+    }
+    #downloadBtn {
+      margin: 20px auto;
+      display: block;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
   <h1>📚 내 서재 검색</h1>
-  <input type="text" id="search" placeholder="책 제목이나 저자 검색..." onkeyup="filterBooks()" />
-  <table id="bookTable" border="1">
+  <input type="text" id="searchInput" placeholder="책 제목이나 저자 검색...">
+  <button id="downloadBtn">📥 전체 목록 다운로드</button>
+  <table id="bookTable">
     <thead>
       <tr>
         <th>제목</th>
@@ -16,47 +57,48 @@
         <th>추천 대상</th>
       </tr>
     </thead>
-    <tbody id="bookBody">
-      <!-- JS에서 책 목록 삽입 -->
+    <tbody>
+      <tr><td>불편한 편의점 3</td><td>김호연</td><td>한국소설</td><td>따뜻한 이야기와 사람 사는 냄새를 좋아하는 독자</td></tr>
+      <tr><td>하얼빈</td><td>김훈</td><td>역사소설</td><td>안중근과 근대사에 관심 있는 독자</td></tr>
+      <tr><td>세이노의 가르침</td><td>세이노</td><td>자기계발</td><td>현실적이고 단단한 조언이 필요한 20~40대 직장인</td></tr>
+      <tr><td>피프티 피플</td><td>정세랑</td><td>한국소설</td><td>사람들의 다층적 삶과 연결고리를 좋아하는 독자</td></tr>
+      <tr><td>문과 남자의 과학 공부</td><td>유시민</td><td>과학에세이</td><td>과학에 대한 두려움을 내려놓고 싶은 문과생</td></tr>
+      <tr><td>메리골드 마음 세탁소</td><td>이미예</td><td>힐링소설</td><td>지친 일상 속 위로와 감동이 필요한 사람</td></tr>
+      <tr><td>작별인사</td><td>김영하</td><td>SF소설</td><td>인간과 기계, 존재에 대한 철학적 이야기에 관심 있는 독자</td></tr>
+      <tr><td>돈의 심리학</td><td>모건 하우절</td><td>경제/심리</td><td>부와 소비에 대한 깊은 통찰을 원하는 사람</td></tr>
+      <tr><td>타인의 해석</td><td>말콤 글래드웰</td><td>사회심리</td><td>사람들의 행동과 심리를 더 깊이 이해하고 싶은 사람</td></tr>
+      <tr><td>아주 희미한 빛으로도</td><td>요나스 요나손</td><td>해외소설</td><td>유쾌한 이야기와 독특한 인물 구성을 좋아하는 독자</td></tr>
     </tbody>
   </table>
 
   <script>
-    const books = [
-      { title: "불편한 편의점 3", author: "김호연", category: "한국소설", recommendation: "따뜻한 이야기와 사람 사는 냄새를 좋아하는 독자" },
-      { title: "하얼빈", author: "김훈", category: "역사소설", recommendation: "안중근과 근대사에 관심 있는 독자" },
-      { title: "세이노의 가르침", author: "세이노", category: "자기계발", recommendation: "현실적이고 단단한 조언이 필요한 20~40대 직장인" },
-      { title: "피프티 피플", author: "정세랑", category: "한국소설", recommendation: "사람들의 다층적 삶과 연결고리를 좋아하는 독자" },
-      { title: "문과 남자의 과학 공부", author: "유시민", category: "과학에세이", recommendation: "과학에 대한 두려움을 내려놓고 싶은 문과생" },
-      { title: "메리골드 마음 세탁소", author: "이미예", category: "힐링소설", recommendation: "지친 일상 속 위로와 감동이 필요한 사람" },
-      { title: "작별인사", author: "김영하", category: "SF소설", recommendation: "인간과 기계, 존재에 대한 철학적 이야기에 관심 있는 독자" },
-      { title: "돈의 심리학", author: "모건 하우절", category: "경제/심리", recommendation: "부와 소비에 대한 깊은 통찰을 원하는 사람" },
-      { title: "타인의 해석", author: "말콤 글래드웰", category: "사회심리", recommendation: "사람들의 행동과 심리를 더 깊이 이해하고 싶은 사람" },
-      { title: "아주 희미한 빛으로도", author: "요나스 요나손", category: "해외소설", recommendation: "유쾌한 이야기와 독특한 인물 구성을 좋아하는 독자" }
-    ];
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("bookTable");
+    searchInput.addEventListener("keyup", () => {
+      const filter = searchInput.value.toLowerCase();
+      const rows = table.getElementsByTagName("tr");
+      for (let i = 1; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName("td");
+        const rowText = [...cells].map(cell => cell.textContent.toLowerCase()).join(" ");
+        rows[i].style.display = rowText.includes(filter) ? "" : "none";
+      }
+    });
 
-    function renderBooks(data) {
-      const body = document.getElementById("bookBody");
-      body.innerHTML = "";
-      data.forEach(book => {
-        body.innerHTML += `<tr>
-          <td>${book.title}</td>
-          <td>${book.author}</td>
-          <td>${book.category}</td>
-          <td>${book.recommendation}</td>
-        </tr>`;
+    document.getElementById("downloadBtn").addEventListener("click", () => {
+      let csv = "제목,저자,분류,추천 대상\n";
+      const rows = table.querySelectorAll("tbody tr");
+      rows.forEach(row => {
+        if (row.style.display !== "none") {
+          const cols = row.querySelectorAll("td");
+          csv += [...cols].map(td => '"' + td.innerText.replace(/"/g, '""') + '"').join(",") + "\n";
+        }
       });
-    }
-
-    function filterBooks() {
-      const keyword = document.getElementById("search").value.toLowerCase();
-      const filtered = books.filter(b =>
-        b.title.toLowerCase().includes(keyword) || b.author.toLowerCase().includes(keyword)
-      );
-      renderBooks(filtered);
-    }
-
-    renderBooks(books);
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.setAttribute("href", URL.createObjectURL(blob));
+      link.setAttribute("download", "my_books.csv");
+      link.click();
+    });
   </script>
 </body>
 </html>
