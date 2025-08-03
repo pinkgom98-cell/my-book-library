@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>내 서재 - 도서 검색</title>
+</head>
+<body>
+  <h1>📚 내 서재 검색</h1>
+  <input type="text" id="search" placeholder="책 제목이나 저자 검색..." onkeyup="filterBooks()" />
+  <table id="bookTable" border="1">
+    <thead>
+      <tr>
+        <th>제목</th>
+        <th>저자</th>
+        <th>분류</th>
+        <th>추천 대상</th>
+      </tr>
+    </thead>
+    <tbody id="bookBody">
+      <!-- JS에서 책 목록 삽입 -->
+    </tbody>
+  </table>
+
+  <script>
+    const books = [
+      { title: "불편한 편의점 3", author: "김호연", category: "한국소설", recommendation: "따뜻한 이야기와 사람 사는 냄새를 좋아하는 독자" },
+      { title: "하얼빈", author: "김훈", category: "역사소설", recommendation: "안중근과 근대사에 관심 있는 독자" },
+      { title: "세이노의 가르침", author: "세이노", category: "자기계발", recommendation: "현실적이고 단단한 조언이 필요한 20~40대 직장인" },
+      { title: "피프티 피플", author: "정세랑", category: "한국소설", recommendation: "사람들의 다층적 삶과 연결고리를 좋아하는 독자" },
+      { title: "문과 남자의 과학 공부", author: "유시민", category: "과학에세이", recommendation: "과학에 대한 두려움을 내려놓고 싶은 문과생" },
+      { title: "메리골드 마음 세탁소", author: "이미예", category: "힐링소설", recommendation: "지친 일상 속 위로와 감동이 필요한 사람" },
+      { title: "작별인사", author: "김영하", category: "SF소설", recommendation: "인간과 기계, 존재에 대한 철학적 이야기에 관심 있는 독자" },
+      { title: "돈의 심리학", author: "모건 하우절", category: "경제/심리", recommendation: "부와 소비에 대한 깊은 통찰을 원하는 사람" },
+      { title: "타인의 해석", author: "말콤 글래드웰", category: "사회심리", recommendation: "사람들의 행동과 심리를 더 깊이 이해하고 싶은 사람" },
+      { title: "아주 희미한 빛으로도", author: "요나스 요나손", category: "해외소설", recommendation: "유쾌한 이야기와 독특한 인물 구성을 좋아하는 독자" }
+    ];
+
+    function renderBooks(data) {
+      const body = document.getElementById("bookBody");
+      body.innerHTML = "";
+      data.forEach(book => {
+        body.innerHTML += `<tr>
+          <td>${book.title}</td>
+          <td>${book.author}</td>
+          <td>${book.category}</td>
+          <td>${book.recommendation}</td>
+        </tr>`;
+      });
+    }
+
+    function filterBooks() {
+      const keyword = document.getElementById("search").value.toLowerCase();
+      const filtered = books.filter(b =>
+        b.title.toLowerCase().includes(keyword) || b.author.toLowerCase().includes(keyword)
+      );
+      renderBooks(filtered);
+    }
+
+    renderBooks(books);
+  </script>
+</body>
+</html>
